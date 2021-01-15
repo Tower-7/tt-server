@@ -1,7 +1,7 @@
 const User = require("../Models/Common/user");
 const Article = require("../Models/Common/article");
 const multer = require("koa-multer");
-const session = require("koa-session");
+const jwt = require("jsonwebtoken");
 //文件上传
 const storage = multer.diskStorage({
   //文件保存路径
@@ -55,35 +55,38 @@ module.exports = {
     });
     promise.then((isMatch) => {
       if (isMatch) {
-        ctx.session.user = user;
-        ctx.body = {
-          code: 200,
-          data: { msg: "登录成功", status: "1", url: url },
-        };
+        let token = jwt.sign(user, "secret", {
+          expiresIn: 60 * 60 * 1,
+        });
+        ctx.body = { code: 200, data: { msg: "登录成功", token: token } };
       } else {
-        ctx.body = { msg: "密码错误", status: "3" };
+        ctx.body = { code: 50008, data: { msg: "密码错误" } };
       }
     });
     return promise;
   },
   userInfo: async (ctx) => {
-    if (ctx.session.user) {
-      return (ctx.body = {
-        code: 200,
-        data: {
-          roles: ["admin"],
-          introduction: "I am a super administrator",
-          avatar:
-            "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
-          name: "Super Admin",
-        },
-      });
-    } else {
-      return (ctx.body = {
-        code: 50008,
-        message: "Login failed, unable to get user details.",
-      });
-    }
+    let token = ctx.request.header.authorization;
+    console.log(token);
+    jwt.verify(token, "secret", function (err) {
+      if (err) {
+        return (ctx.body = {
+          code: 50008,
+          message: "Login failed, unable to get user details.",
+        });
+      } else {
+        return (ctx.body = {
+          code: 200,
+          data: {
+            roles: ["admin"],
+            introduction: "I am a super administrator",
+            avatar:
+              "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
+            name: "Super Admin",
+          },
+        });
+      }
+    });
   },
   signRequired: async (ctx, next) => {
     let isUser = ctx.session.user;
