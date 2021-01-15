@@ -1,0 +1,11 @@
+version: "2"
+services:
+  node:
+    build: .
+    volumes:
+      - ./tt-server:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "8000:8000"
+    command: "npm start"
+    restart: always

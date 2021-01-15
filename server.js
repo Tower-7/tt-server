@@ -37,8 +37,8 @@ app.use(
 );
 //连接数据库
 mongoose.Promise = require("bluebird");
-const dbUrl = "mongodb://localhost:27017/web";
-// const dbUrl = 'mongodb://admin:xyzqq*859632@47.88.53.87:16016/'
+// const dbUrl = "mongodb://localhost:27017/web";
+const dbUrl = "mongodb://root:password@8.210.11.11:27017";
 //参数设置
 const options = {
   useMongoClient: true,
