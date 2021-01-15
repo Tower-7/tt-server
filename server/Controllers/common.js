@@ -88,15 +88,17 @@ module.exports = {
     });
   },
   signRequired: async (ctx, next) => {
-    let isUser = ctx.session.user;
-    if (!isUser) {
-      return (ctx.body = {
-        code: 50008,
-        message: "Login failed, unable to get user details.",
-      });
-    } else {
-      next();
-    }
+    let token = ctx.request.header.authorization;
+    jwt.verify(token, "secret", function (err) {
+      if (err) {
+        return (ctx.body = {
+          code: 50008,
+          message: "Login failed, unable to get user details.",
+        });
+      } else {
+        next();
+      }
+    });
   },
   //登出
   logout: async (ctx) => {
