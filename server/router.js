@@ -13,9 +13,9 @@ module.exports = (app) => {
   router.get("/", Pc.index);
 
   //admin
-  router.get("/admin", Admin.signRequired, Admin.index);
-  router.get("/adminDist", Admin.signRequired, Admin.adminDist);
-  router.get("/product/list", Admin.signRequired, Admin.productList); //productList
+  router.get("/admin", Admin.index);
+  router.get("/adminDist", Admin.adminDist);
+  router.get("/product/list", Admin.productList); //productList
   router.post("/admin/updateProduct", Admin.signRequired, Admin.updateProduct); //updateProduct
   router.get("/product/detail", Admin.productDetail); //updateProduct
 

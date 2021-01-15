@@ -67,7 +67,6 @@ module.exports = {
   },
   userInfo: async (ctx) => {
     let token = ctx.request.header.authorization;
-    console.log(token);
     jwt.verify(token, "secret", function (err) {
       if (err) {
         return (ctx.body = {
