@@ -89,7 +89,7 @@ module.exports = {
   },
   signRequired: async (ctx, next) => {
     let token = ctx.request.header.authorization;
-    jwt.verify(token, "secret", function (err) {
+    jwt.verify(token, "secret", (err) => {
       if (err) {
         return (ctx.body = {
           code: 50008,
@@ -97,6 +97,9 @@ module.exports = {
         });
       } else {
         next();
+        return (ctx.body = {
+          code: 200,
+        });
       }
     });
   },

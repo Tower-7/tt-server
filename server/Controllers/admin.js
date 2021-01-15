@@ -220,15 +220,7 @@ module.exports = {
   sign: async (ctx) => {
     await ctx.render("admin/sign");
   },
-  //验证登陆中间件
-  signRequired: async (ctx, next) => {
-    let user = ctx.session.user;
-    let url = ctx.request.originalUrl;
-    if (!user) {
-      return ctx.redirect("/admin/sign?" + url);
-    }
-    await next();
-  },
+
   delProductType: async (ctx) => {
     await del(ctx, ProductType);
   },
